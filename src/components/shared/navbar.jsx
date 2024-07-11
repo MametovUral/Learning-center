@@ -33,7 +33,7 @@ function NavbarSection() {
 
           <div className="flex items-center gap-2">
             <img src="/src/assets/logo.png" alt="logo" />
-            <span className="font-mono text-[#FCFCFC] text-2xl">Training Center</span>
+            <span className="font-mono text-[#FCFCFC] text-2xl">Learning Center</span>
           </div>
         </Navbar.Brand>
 

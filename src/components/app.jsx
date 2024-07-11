@@ -8,6 +8,7 @@ import Students from "../pages/students";
 
 import Users from "../pages/users";
 import WorkTable from "../pages/work-table";
+import Auth from "../pages/auth";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       },
       { path: "work-table", element: <WorkTable /> },
     ],
+  },
+  {
+    path: "login",
+    element: <Auth />,
   },
 ]);
 
