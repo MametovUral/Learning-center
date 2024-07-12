@@ -32,6 +32,7 @@ const router = createBrowserRouter([
       { path: "work-table", element: <WorkTable /> },
     ],
   },
+
   {
     path: "login",
     element: <Auth />,

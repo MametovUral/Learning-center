@@ -14,7 +14,6 @@ const useAuthStore = create((set) => ({
       loggedIn: true,
       user,
     });
-    setItem("token", user.token);
   },
   siginUserFailure: (error) =>
     set({
