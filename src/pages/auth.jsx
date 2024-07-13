@@ -38,11 +38,7 @@ function Auth() {
     }
   }
 
-  useEffect(() => {
-    if (loggedIn) {
-      navigate("/");
-    }
-  }, [loggedIn, navigate]);
+  
 
   return (
     <div className="flex justify-center h-screen items-center">

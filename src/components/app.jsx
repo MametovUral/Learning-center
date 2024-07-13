@@ -9,12 +9,18 @@ import Students from "../pages/students";
 import Users from "../pages/users";
 import WorkTable from "../pages/work-table";
 import Auth from "../pages/auth";
+import ProtectedRoutes from "./providers/protected-routes";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <RootLayout />,
+    element: (
+      <ProtectedRoutes>
+        <RootLayout />
+      </ProtectedRoutes>
+    ),
     errorElement: <ErrorPage />,
+
     children: [
       {
         index: true,

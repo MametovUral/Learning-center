@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { setItem } from "../helpers/persistance-store";
 
 const useAuthStore = create((set) => ({
   isLoading: false,

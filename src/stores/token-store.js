@@ -3,10 +3,11 @@ import { setItem } from "../helpers/persistance-store";
 
 const useTokenStore = create((set) => ({
   isLoading: false,
+  loggedIn: false,
 
   signUserStart: () => set({ isLoading: true }),
   signUserSuccess: (token) => {
-    set({ isLoading: false });
+    set({ isLoading: false, loggedIn: true });
     setItem("token", token.token);
   },
   signUserFailure: (error) =>
