@@ -2,15 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import StudentServie from "../service/student";
 import useStudentStore from "../stores/student-strore";
 import { StudentCard } from "../components/shared/student-card";
-import {
-  Button,
-  FileInput,
-  Label,
-  Modal,
-  Select,
-  Spinner,
-  TextInput,
-} from "flowbite-react";
+import { Button, FileInput, Modal, Select, TextInput } from "flowbite-react";
 import FillLoading from "../components/shared/fill-loading";
 import useAuthStore from "../stores/use-auth-store";
 import BranchService from "../service/branch";
@@ -32,7 +24,7 @@ function Students() {
     useBranchStore();
 
   const { groups, groupStart, groupSuccsess, groupFailure } = useGroupStore();
-
+  console.log(groups);
   const [openModal, setOpenModal] = useState(false);
 
   const nameInputRef = useRef("");
@@ -66,7 +58,7 @@ function Students() {
   async function getGroup(id) {
     groupStart();
     try {
-      const res = await GroupService.getGroups(id);
+      const res = await GroupService.getGroup(id);
       groupSuccsess(res);
     } catch (error) {
       groupFailure(error);
@@ -74,7 +66,7 @@ function Students() {
     }
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const addStudent = {
@@ -86,7 +78,12 @@ function Students() {
       photo: fileInputRef.current.value,
     };
 
-    console.log(addStudent);
+    try {
+      const res = await StudentServie.addStudent(addStudent);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {

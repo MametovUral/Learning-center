@@ -2,7 +2,8 @@ import axios from "./api";
 
 const StudentServie = {
   async addStudent(student) {
-    const { data } = await axios.post("/students/add", { student });
+    console.log(student);
+    const { data } = await axios.post("/students/add", student);
     return data;
   },
   async getAllStudent() {
