@@ -28,14 +28,18 @@ function Students() {
   } = useStudentStore();
 
   const { user } = useAuthStore();
+  const { branchs, branchStart, branchSuccsess, branchFailure } =
+    useBranchStore();
+
   const { groups, groupStart, groupSuccsess, groupFailure } = useGroupStore();
-  console.log(groups);
+
   const [openModal, setOpenModal] = useState(false);
 
   const nameInputRef = useRef("");
   const lastInputRef = useRef("");
   const fileInputRef = useRef("");
-  const selectInputRef = useRef("");
+  const groupInputRef = useRef("");
+  const branchInputRef = useRef("");
 
   async function getStudents() {
     getUsersStart();
@@ -43,14 +47,26 @@ function Students() {
       const res = await StudentServie.getAllStudent();
       getUsersSuccess(res);
     } catch (error) {
+      getUsersFailure(error);
       console.log(error);
     }
   }
 
-  async function getGroup() {
+  async function getBranch() {
+    branchStart();
+    try {
+      const res = await BranchService.getBranchs();
+      branchSuccsess(res);
+    } catch (error) {
+      console.log(error);
+      branchFailure(error);
+    }
+  }
+
+  async function getGroup(id) {
     groupStart();
     try {
-      const res = await GroupService.getGroups();
+      const res = await GroupService.getGroups(id);
       groupSuccsess(res);
     } catch (error) {
       groupFailure(error);
@@ -58,7 +74,6 @@ function Students() {
     }
   }
 
-  async function getBranch() {}
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -66,8 +81,8 @@ function Students() {
       auth: user?._id,
       name: nameInputRef.current.value,
       lastname: lastInputRef.current.value,
-      filial: "",
-      groups: selectInputRef.current.value,
+      filial: branchInputRef.current.value,
+      groups: groupInputRef.current.value,
       photo: fileInputRef.current.value,
     };
 
@@ -76,8 +91,9 @@ function Students() {
 
   useEffect(() => {
     getStudents();
-    getGroup();
+    getBranch();
   }, []);
+
   return (
     <section className="">
       <div className="w-full flex items-center justify-between border-b py-2 mb-4">
@@ -128,10 +144,29 @@ function Students() {
               </div>
               <div>
                 <Select
-                  ref={selectInputRef}
+                  ref={branchInputRef}
                   id="countries"
                   defaultValue="0"
                   required
+                  onChange={(e) => getGroup(e.target.value)}
+                >
+                  <option value="0" disabled>
+                    Filialni kiriting
+                  </option>
+                  {branchs?.map((item) => (
+                    <option key={item?._id} value={item?._id}>
+                      {`${item?.title} - ${item?.address}`}
+                    </option>
+                  ))}
+                </Select>
+              </div>
+              <div>
+                <Select
+                  ref={groupInputRef}
+                  id="countries"
+                  defaultValue="0"
+                  required
+                  disabled={!groups}
                 >
                   <option value="0" disabled>
                     Guruhni kiriting
