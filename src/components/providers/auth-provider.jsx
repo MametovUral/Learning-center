@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 function AuthProvider({ children }) {
   const { user, signUserSuccess } = useAuthStore();
   const { isLoading } = useTokenStore();
- 
-  const token = getItem("token");
 
   const [isLoaded, setIsLoaded] = useState(true);
 
@@ -21,21 +19,17 @@ function AuthProvider({ children }) {
           const res = await AuthService.getUser();
           signUserSuccess(res);
           setIsLoaded(false);
-          console.log("tru");
         } else {
           setIsLoaded(false);
-          console.log("false");
         }
       } catch (error) {
         console.log(error);
         setIsLoaded(false);
-       
       }
     }
     getUser();
   }, [signUserSuccess, isLoading]);
 
-  console.log(user);
   return isLoaded ? <FillLoading /> : <>{children}</>;
 }
 

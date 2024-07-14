@@ -8,9 +8,15 @@ import {
   Label,
   Modal,
   Select,
+  Spinner,
   TextInput,
 } from "flowbite-react";
 import FillLoading from "../components/shared/fill-loading";
+import useAuthStore from "../stores/use-auth-store";
+import BranchService from "../service/branch";
+import useBranchStore from "../stores/branch-store";
+import useGroupStore from "../stores/group-store";
+import GroupService from "../service/group";
 
 function Students() {
   const {
@@ -21,14 +27,16 @@ function Students() {
     getUsersFailure,
   } = useStudentStore();
 
-  const [openModal, setOpenModal] = useState(true);
+  const { user } = useAuthStore();
+  const { groups, groupStart, groupSuccsess, groupFailure } = useGroupStore();
+  console.log(groups);
+  const [openModal, setOpenModal] = useState(false);
 
-  const nameInputRef = useRef();
-  const lastInputRef = useRef();
-  const fileInputRef = useRef();
-  const selectInputRef = useRef();
+  const nameInputRef = useRef("");
+  const lastInputRef = useRef("");
+  const fileInputRef = useRef("");
+  const selectInputRef = useRef("");
 
-  console.log(students);
   async function getStudents() {
     getUsersStart();
     try {
@@ -39,12 +47,36 @@ function Students() {
     }
   }
 
-  const handleChange = (event) => {
-    console.log(event.target.value);
+  async function getGroup() {
+    groupStart();
+    try {
+      const res = await GroupService.getGroups();
+      groupSuccsess(res);
+    } catch (error) {
+      groupFailure(error);
+      console.log(error);
+    }
+  }
+
+  async function getBranch() {}
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const addStudent = {
+      auth: user?._id,
+      name: nameInputRef.current.value,
+      lastname: lastInputRef.current.value,
+      filial: "",
+      groups: selectInputRef.current.value,
+      photo: fileInputRef.current.value,
+    };
+
+    console.log(addStudent);
   };
 
   useEffect(() => {
     getStudents();
+    getGroup();
   }, []);
   return (
     <section className="">
@@ -78,41 +110,47 @@ function Students() {
       >
         <Modal.Header />
         <Modal.Body>
-          <div className="space-y-6">
-            <div>
-              <TextInput ref={nameInputRef} placeholder="Ism" required />
-            </div>
-            <div>
-              <TextInput
-                ref={lastInputRef}
-                type="text"
-                placeholder="Familya"
-                required
-              />
-            </div>
-            <div id="fileUpload">
-              <FileInput ref={fileInputRef} id="file" className="" />
-            </div>
-            <div>
-              <Select
-                ref={selectInputRef}
-                onChange={handleChange}
-                defaultValue="def"
-                required
-              >
-                <option value="def" selected >
-                  Filiallardan birini tanlang
-                </option>
-                <option value="1">Canada</option>
-                <option value="2">France</option>
-                <option value="3">Germany</option>
-              </Select>
-            </div>
+          <form onSubmit={handleSubmit}>
+            <div className="space-y-6">
+              <div>
+                <TextInput ref={nameInputRef} placeholder="Ism" required />
+              </div>
+              <div>
+                <TextInput
+                  ref={lastInputRef}
+                  type="text"
+                  placeholder="Familya"
+                  required
+                />
+              </div>
+              <div id="fileUpload">
+                <FileInput ref={fileInputRef} id="file" className="" />
+              </div>
+              <div>
+                <Select
+                  ref={selectInputRef}
+                  id="countries"
+                  defaultValue="0"
+                  required
+                >
+                  <option value="0" disabled>
+                    Guruhni kiriting
+                  </option>
+                  {groups?.map((item) => (
+                    <option key={item?._id} value={item?._id}>
+                      {item?.title}
+                    </option>
+                  ))}
+                </Select>
+              </div>
 
-            <div className="w-full">
-              <Button className="w-full">Qo'shish</Button>
+              <div className="w-full">
+                <Button type="submit" className="w-full">
+                  Qo'shish
+                </Button>
+              </div>
             </div>
-          </div>
+          </form>
         </Modal.Body>
       </Modal>
     </section>
