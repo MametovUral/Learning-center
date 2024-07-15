@@ -1,6 +1,7 @@
 import { Badge, Button, Card } from "flowbite-react";
 
-export function StudentCard({ student }) {
+export function StudentCard({ student, deleteStudent }) {
+  console.log(student);
   return (
     <Card>
       <div className="flex items-center justify-center shadow rounded-lg">
@@ -24,7 +25,7 @@ export function StudentCard({ student }) {
             Guruhlar:
             {student.groups?.map((item) => (
               <Badge key={item._id} className="w-max" color="success">
-                {item.title}
+                {`${item.title} - ${item.subject.title}`}
               </Badge>
             ))}
           </div>
@@ -35,7 +36,11 @@ export function StudentCard({ student }) {
               <Button size="xs" color="gray">
                 Edite
               </Button>
-              <Button size="xs" color="gray">
+              <Button
+                size="xs"
+                color="gray"
+                onClick={() => deleteStudent(student._id)}
+              >
                 Delete
               </Button>
             </Button.Group>

@@ -12,7 +12,7 @@ function RootLayout() {
       <NavbarSection />
       <SidebarNavigate />
       <main className="flex-1 p-5  md:ml-64">
-        <div className="flex pt-16">
+        <div className="flex pt-16 w-full ">
           {/* {loggedIn ? <Outlet /> : <Navigate to={"login"} />} */}
           {<Outlet />}
         </div>

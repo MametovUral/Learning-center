@@ -12,10 +12,12 @@ const StudentServie = {
   },
   async updateStudent(id, student) {
     const { data } = await axios.put(`/students/update/${id}`, { student });
+    return data;
   },
 
   async deleteStudent(id) {
     const { data } = await axios.delete(`students/delete/${id}`);
+    return data;
   },
 };
 export default StudentServie;

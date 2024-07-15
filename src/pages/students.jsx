@@ -9,6 +9,7 @@ import BranchService from "../service/branch";
 import useBranchStore from "../stores/branch-store";
 import useGroupStore from "../stores/group-store";
 import GroupService from "../service/group";
+import { toast } from "sonner";
 
 function Students() {
   const {
@@ -24,7 +25,7 @@ function Students() {
     useBranchStore();
 
   const { groups, groupStart, groupSuccsess, groupFailure } = useGroupStore();
-  console.log(groups);
+
   const [openModal, setOpenModal] = useState(false);
 
   const nameInputRef = useRef("");
@@ -66,6 +67,18 @@ function Students() {
     }
   }
 
+  async function deleteStudent(id) {
+    console.log(id);
+    try {
+      const res = await StudentServie.deleteStudent(id);
+      toast.success(res.message);
+    } catch (error) {
+      console.log(error);
+    }
+
+    getStudents();
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -80,10 +93,12 @@ function Students() {
 
     try {
       const res = await StudentServie.addStudent(addStudent);
-      console.log(res);
+      toast.success(res.message);
+      setOpenModal(false);
     } catch (error) {
       console.log(error);
     }
+    getStudents();
   };
 
   useEffect(() => {
@@ -92,7 +107,7 @@ function Students() {
   }, []);
 
   return (
-    <section className="">
+    <section className="w-full">
       <div className="w-full flex items-center justify-between border-b py-2 mb-4">
         <span className="font-mono uppercase  font-bold text-[#3C4C99]">
           Jami o'quvchilar soni - {students?.length}
@@ -109,7 +124,11 @@ function Students() {
       <div className="grid grid-cols-4  gap-6">
         {isLoading && <FillLoading />}
         {students?.map((student) => (
-          <StudentCard key={student._id} student={student} />
+          <StudentCard
+            key={student._id}
+            student={student}
+            deleteStudent={deleteStudent}
+          />
         ))}
       </div>
 
@@ -170,7 +189,7 @@ function Students() {
                   </option>
                   {groups?.map((item) => (
                     <option key={item?._id} value={item?._id}>
-                      {item?.title}
+                      {`${item?.title} - ${item?.subject?.title}`}
                     </option>
                   ))}
                 </Select>
