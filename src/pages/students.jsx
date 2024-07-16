@@ -68,7 +68,6 @@ function Students() {
   }
 
   async function deleteStudent(id) {
-    console.log(id);
     try {
       const res = await StudentServie.deleteStudent(id);
       toast.success(res.message);
@@ -77,6 +76,15 @@ function Students() {
     }
 
     getStudents();
+  }
+
+  async function updateStudent(id) {
+    try {
+      const res = await StudentServie.updateStudent(id);
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const handleSubmit = async (e) => {
@@ -122,12 +130,13 @@ function Students() {
         </Button>
       </div>
       <div className="grid grid-cols-4  gap-6">
-        {isLoading && <FillLoading />}
+        {isLoading && "loading...."}
         {students?.map((student) => (
           <StudentCard
-            key={student._id}
+            key={student?._id}
             student={student}
             deleteStudent={deleteStudent}
+            updateStudent={updateStudent}
           />
         ))}
       </div>

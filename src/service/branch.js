@@ -14,8 +14,9 @@ const BranchService = {
     const { data } = await axios.post("/filials/add", branch);
     return data;
   },
-  async updateBranch(id) {
-    const { data } = await axios.put(`/filials/update/${id}`);
+  async updateBranch(id, branch) {
+ 
+    const { data } = await axios.put(`/filials/update/${id}`, branch);
     return data;
   },
 
