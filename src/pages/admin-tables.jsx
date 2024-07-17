@@ -6,6 +6,7 @@ import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { toast } from "sonner";
 import ModalCard from "../components/shared/modal-card";
 import useTemporaryStore from "../stores/temporary-store";
+import BranchTable from "../components/admin-tables/branch-table";
 
 function AdminTables() {
   const [openModal, setOpenModal] = useState(false);
@@ -95,25 +96,7 @@ function AdminTables() {
   return (
     <section className="w-full pt-5">
       <div className="border-b mb-5">
-        <div className="flex justify-between items-center mb-5">
-          <h5 className="font-mono font-bold text-2xl uppercase  text-[#3C4C99]">
-            Filiallar
-          </h5>
-          <Button
-            pill
-            className="border-[#3C4C99] font-mono text-[#3C4C99] font-bold bg-[#FFD126]"
-            onClick={() => setOpenModal(true)}
-          >
-            Filial qo'shish
-          </Button>
-        </div>
-        <div className="overflow-x-auto ">
-          <AllTables
-            branchs={branchs}
-            deletBranch={deletBranch}
-            updateBranch={updateBranch}
-          />
-        </div>
+        <BranchTable />
       </div>
       <div className="border-b mb-5">
         <div className="flex justify-between items-center mb-5">
