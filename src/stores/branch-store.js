@@ -4,6 +4,7 @@ const useBranchStore = create((set) => ({
   isloading: false,
   error: null,
   branchs: null,
+  branch2: null,
 
   branchStart: () => set({ isloading: true }),
   branchSuccsess: (branchs) => set({ isloading: false, branchs }),

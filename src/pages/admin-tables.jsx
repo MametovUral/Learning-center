@@ -12,7 +12,6 @@ function AdminTables() {
   const [openEditeModal, setOpenEditeModal] = useState(false);
   const [branchName, setBranchName] = useState("");
   const [branchLocation, setBranchLocation] = useState("");
-  console.log("edite");
 
   const { branchs, branchStart, branchSuccsess, branchFailure } =
     useBranchStore();
